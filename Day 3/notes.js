@@ -4,7 +4,7 @@ const port = 3000;
 
 let notes = [];
 
-app.use(express.json())  //Middleware
+app.use(express.json())  //Middleware = It allows express to read the data coming from frontend in req.body👇🏻.
 
 app.post('/notes', (req, res) => {
     notes.push(req.body)
