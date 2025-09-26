@@ -1,7 +1,7 @@
 const mongoose = require("mongoose");
 
 const connectToDB = () => {
-    mongoose.connect('mongodb+srv://zodik:tuRL7sg0JQlqCaBq@cluster.51yornv.mongodb.net/zodik')
+    mongoose.connect('')
         .then(() => {
             console.log('DB has been connected to server successfully.');
         })
