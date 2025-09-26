@@ -2,9 +2,13 @@
 const express = require('express');
 const app = express();  // Create Express server instance.
 
+const connectToDB = require('./src/db/db')  //  DB connection function required from the ./src/db/db.js file.
 
 const port = 3000;  // Port number for server to run.
 let notes = [];     // Notes array to store notes data (temporary in-memory DB).
+
+connectToDB();  //  DB is connected to Server.
+
 // Middleware which allows Express to read req.body's JSON format data.
 app.use(express.json());
 
