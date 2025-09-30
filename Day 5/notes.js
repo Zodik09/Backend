@@ -1,4 +1,5 @@
 const express = require('express');
+require('@dotenvx/dotenvx').config();
 const app = express();  // Create Express server instance.
 const noteModel = require("./src/models/notes.model")
 const connectToDB = require('./src/db/db')  //  DB connection function required from the ./src/db/db.js file.
