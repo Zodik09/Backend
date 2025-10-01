@@ -1,5 +1,6 @@
 // storage.services.js
 const ImageKit = require("imagekit");
+const mongoose = require("mongoose")
 require("@dotenvx/dotenvx").config();
 
 const imagekit = new ImageKit({
@@ -12,10 +13,10 @@ function uploadFile(file) {
     return new Promise((resolve, reject) => {
         imagekit.upload({
             file: file.buffer,
-            fileName: "AZUL"
+            fileName: file.originalname + new mongoose.Types.ObjectId().toString(),
+            folder: "songs"
         }, (error, result) => {
-            if (error) reject(error)
-            else resolve(result);
+            error ? reject(error) : resolve(result);
         })
     })
 }
