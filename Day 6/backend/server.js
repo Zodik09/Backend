@@ -1,10 +1,8 @@
 const app = require("./src/app");
-const connectToDB = require("./src/db/db");
-const songsModel = require("./src/models/songs.model");
+const connectToDB = require("./src/db/db"); 
 require("@dotenvx/dotenvx").config();
 
 connectToDB();
-songsModel();
 
 const port = 3000;
 
