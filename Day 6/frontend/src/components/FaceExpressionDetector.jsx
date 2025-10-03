@@ -48,7 +48,7 @@ export default function FaceExpressionDetector() {
 
         // Fetch songs based on mood
         const response = await axios.get(
-          `http://localhost:3000/songs?mood=${bestExpression}`
+          `${import.meta.env.VITE_API_URL}/songs?mood=${bestExpression}`
         );
 
         if (response.data?.songs && Array.isArray(response.data.songs)) {
