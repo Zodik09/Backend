@@ -1,13 +1,159 @@
-*{
-    margin: 0px;
-    padding: 0px;
-    box-sizing: border-box;
-    list-style: none;
-    text-decoration: none;
+@charset "UTF-8";
+* {
+  margin: 0px;
+  padding: 0px;
+  box-sizing: border-box;
+  list-style: none;
+  text-decoration: none;
 }
 
 html,
 body {
+  width: 100%;
+  height: 100%;
+  background-color: rgb(0, 0, 0);
+  color: white;
+  overflow-x: hidden;
+}
+
+.videoContainer {
+  width: 100vw;
+  padding: 2rem;
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  gap: 2rem;
+  flex-wrap: wrap;
+}
+.videoContainer video {
+  -o-object-fit: cover;
+     object-fit: cover;
+  width: 65vw;
+  aspect-ratio: 16/9;
+  box-shadow: 5px 5px 15px black;
+  border-radius: 2rem;
+}
+.videoContainer .getSongs {
+  display: flex;
+  justify-content: center;
+  flex-direction: column;
+  text-align: center;
+  flex: 1;
+  padding: 2rem;
+}
+.videoContainer .getSongs button {
+  background-color: rgb(220, 20, 60);
+  padding: 0.8rem 2rem;
+  margin: 2rem auto;
+  font-weight: 600;
+  border-radius: 50px;
+  outline: none;
+  border: none;
+  color: white;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: all 0.2s ease-in-out;
+}
+.videoContainer .getSongs button:active {
+  scale: 0.9;
+}
+.videoContainer .getSongs button:hover {
+  box-shadow: rgba(255, 255, 255, 0.3) 8px 8px 10px 0px;
+}
+.videoContainer .getSongs .songsContainer {
+  text-align: center;
+  overflow: auto;
+}
+.videoContainer .getSongs .songsContainer h1 {
+  font-size: 2.5rem;
+  margin-bottom: 0.5rem;
+  font-weight: bolder;
+}
+.videoContainer .getSongs .songsContainer .songs {
+  background-color: rgb(34, 34, 34);
+  margin-top: 0.5rem;
+  border-radius: 1rem;
+  padding: 1rem;
+}
+.videoContainer .getSongs .songsContainer .songs h3 {
+  font-size: 1.5rem;
+  line-height: 1.8rem;
+}
+.videoContainer .getSongs .songsContainer .songs button {
+  padding: 0.5rem 2rem;
+  margin: 1rem auto;
+}
+.videoContainer .getSongs .songsContainer .songs button:active {
+  scale: 0.9;
+}
+.videoContainer .getSongs .songsContainer > p {
+  color: red;
+  font-weight: 500;
+}
+
+/* 🔹 Responsiveness */
+@media (max-width: 1024px) {
+  .videoContainer {
+    flex-direction: column;
+    padding: 1.5rem;
+  }
+  .videoContainer video {
     width: 100%;
-    height: 100%;
+    max-width: 700px;
+  }
+  .videoContainer .getSongs {
+    padding: 1.5rem;
+  }
+  .videoContainer .getSongs .songsContainer h1 {
+    font-size: 2rem;
+  }
+  .videoContainer .getSongs .songsContainer .songs h3 {
+    font-size: 1.2rem;
+  }
+}
+@media (max-width: 768px) {
+  .videoContainer {
+    padding: 1rem;
+  }
+  .videoContainer video {
+    width: 100%;
+    border-radius: 1rem;
+  }
+  .videoContainer .getSongs {
+    padding: 1rem;
+  }
+  .videoContainer .getSongs button {
+    font-size: 0.9rem;
+    padding: 0.6rem 1.5rem;
+  }
+  .videoContainer .getSongs .songsContainer h1 {
+    font-size: 1.5rem;
+  }
+  .videoContainer .getSongs .songsContainer .songs h3 {
+    font-size: 1rem;
+  }
+}
+@media (max-width: 480px) {
+  .videoContainer {
+    padding: 0.5rem;
+  }
+  .videoContainer video {
+    width: 100%;
+    height: 60%;
+    aspect-ratio: 9/10;
+    border-radius: 0.8rem;
+  }
+  .videoContainer .getSongs {
+    padding: 0.5rem;
+  }
+  .videoContainer .getSongs button {
+    font-size: 0.8rem;
+    padding: 0.5rem 1.2rem;
+  }
+  .videoContainer .getSongs .songsContainer h1 {
+    font-size: 1.2rem;
+  }
+  .videoContainer .getSongs .songsContainer .songs h3 {
+    font-size: 0.9rem;
+  }
 }

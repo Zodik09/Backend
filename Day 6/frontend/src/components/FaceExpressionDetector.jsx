@@ -1,18 +1,30 @@
-import React, { useEffect, useRef } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import * as faceapi from "face-api.js";
+import axios from "axios";
+import "../../src/index.css";
+import MoodSongs from "./MoodSongs";
 
 export default function FaceExpressionDetector() {
+  const [songs, setSongs] = useState([]);
   const videoRef = useRef(null);
 
   useEffect(() => {
     const startVideo = async () => {
-      // Load models (must be inside public/models/)
-      await faceapi.nets.tinyFaceDetector.loadFromUri("/models");
-      await faceapi.nets.faceExpressionNet.loadFromUri("/models");
+      try {
+        // Load face-api models (must be inside /public/models/)
+        await faceapi.nets.tinyFaceDetector.loadFromUri("/models");
+        await faceapi.nets.faceExpressionNet.loadFromUri("/models");
 
-      // Start webcam
-      const stream = await navigator.mediaDevices.getUserMedia({ video: true });
-      videoRef.current.srcObject = stream;
+        // Start webcam stream
+        const stream = await navigator.mediaDevices.getUserMedia({
+          video: true,
+        });
+        if (videoRef.current) {
+          videoRef.current.srcObject = stream;
+        }
+      } catch (err) {
+        console.error("Error starting video:", err);
+      }
     };
 
     startVideo();
@@ -21,57 +33,49 @@ export default function FaceExpressionDetector() {
   const detectExpression = async () => {
     if (!videoRef.current) return;
 
-    const detections = await faceapi
-      .detectAllFaces(videoRef.current, new faceapi.TinyFaceDetectorOptions())
-      .withFaceExpressions();
+    try {
+      const detections = await faceapi
+        .detectAllFaces(videoRef.current, new faceapi.TinyFaceDetectorOptions())
+        .withFaceExpressions();
 
-    if (detections.length > 0) {
-      const expressions = detections[0].expressions;
+      if (detections.length > 0) {
+        const expressions = detections[0].expressions;
 
-      const maxValue = Math.max(...Object.values(expressions));
-      const bestExpression = Object.keys(expressions).find(
-        (key) => expressions[key] === maxValue
+        // Find best expression
+        const bestExpression = Object.keys(expressions).reduce((a, b) =>
+          expressions[a] > expressions[b] ? a : b
+        );
+
+        // Fetch songs based on mood
+        const response = await axios.get(
+          `http://localhost:3000/songs?mood=${bestExpression}`
+        );
+
+        if (response.data?.songs && Array.isArray(response.data.songs)) {
+          setSongs(response.data.songs);
+        } else {
+          setSongs([]);
+        }
+      } else {
+        console.log("No face detected.");
+        setSongs([]);
+      }
+    } catch (error) {
+      console.error(
+        "Error detecting expression or fetching songs:",
+        error.message
       );
-
-      console.log("Detected Expression:", bestExpression, expressions[bestExpression]);
-    } else {
-      console.log("Detected Expression:", null);
+      setSongs([]);
     }
   };
 
   return (
-    <div
-      style={{
-        display: "flex",
-        flexDirection: "column",
-        justifyContent: "center",
-        alignItems: "center",
-        height: "100vh",
-        width: "100%",
-      }}
-    >
-      <video
-        ref={videoRef}
-        autoPlay
-        muted
-        width="640"
-        height="480"
-        style={{ borderRadius: "10px", marginBottom: "20px" }}
-      />
-      <button
-        onClick={detectExpression}
-        style={{
-          padding: "10px 20px",
-          borderRadius: "8px",
-          border: "none",
-          background: "#007bff",
-          color: "white",
-          cursor: "pointer",
-          fontSize: "16px",
-        }}
-      >
-        Detect Expression
-      </button>
+    <div className="videoContainer">
+      <video ref={videoRef} autoPlay muted crossOrigin="anonymous" />
+      <div className="getSongs">
+        <button onClick={detectExpression}>Detect Expression</button>
+        <MoodSongs songs={songs} />
+      </div>
     </div>
   );
 }
