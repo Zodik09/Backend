@@ -42,7 +42,7 @@ const MoodSongs = ({ songs }) => {
           </div>
         ))
       ) : (
-        <p>No songs available</p>
+        <p>No face detected.</p>
       )}</div>
 
       {/* hidden single audio element for playback */}
