@@ -14,7 +14,3 @@ const authSchema = new mongoose.Schema({
 const authModel = mongoose.model("auth", authSchema);
 
 module.exports = authModel;
-// image: String,
-// caption: String,
-// likes: { type: Number, default: 0 },
-// createdAt: { type: Date, default: Date.now }
