@@ -1,20 +1,19 @@
-const uploadImage = require("../services/storage.services");
-const AI = require("../services/ai.services");
+const uploadImage = require("../services/storage.service");
 const postModel = require("../models/post.model");
+const generateCaption = require("../services/ai.service");
 
 const createPostController = async (req, res) => {
   const image = req.file;
+  const base64ImageFile = Buffer.from(image.buffer).toString("base64");
+  const caption = await generateCaption(base64ImageFile);
   const imageData = await uploadImage(image);
-  const caption = await AI(imageData.url);
   const post = await postModel.create({
     user: req.user._id,
     image: imageData.url,
     caption: caption,
   });
 
-  res
-    .status(201)
-    .json({ message: "Post created successfully", caption: caption });
+  res.status(201).json({ imageURL: post.image, caption: post.caption });
 };
 
 const getPostController = async (req, res) => {
