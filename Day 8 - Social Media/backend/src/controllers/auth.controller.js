@@ -1,6 +1,6 @@
-const jwt = require("jsonwebtoken");
 const authModel = require("../models/auth.model");
-const bcrypt = require("bcrypt");
+const bcrypt = require("bcryptjs");
+const jwt = require("jsonwebtoken");
 
 const registerController = async (req, res) => {
   const { username, password } = req.body || {};
@@ -47,10 +47,11 @@ const registerController = async (req, res) => {
       message: "Username already exists. Please choose a different username.",
     });
   }
+  const hashedPassword = await bcrypt.hash(trimmedPassword, 10);
 
   const user = await authModel.create({
     username: trimmedUsername,
-    password: await bcrypt.hash(trimmedPassword, 10),
+    password: hashedPassword,
   });
 
   const token = jwt.sign({ id: user._id }, process.env.JWT_SECRET);
@@ -81,12 +82,12 @@ const loginController = async (req, res) => {
   if (!userExist) {
     return res.status(404).json({ message: trimmedUsername + " not found!" });
   }
-  
+
   const varifyPassword = await bcrypt.compare(password, userExist.password);
 
   if (!varifyPassword) {
-    return res.status(401).json({
-      message: "Your password is invalid!",
+    return res.status(400).json({
+      message: "Invalid credentials!",
     });
   }
 
