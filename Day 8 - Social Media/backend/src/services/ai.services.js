@@ -7,7 +7,7 @@ const ai = new GoogleGenAI({});
 async function main(url) {
   const response = await ai.models.generateContent({
     model: "gemini-2.5-flash",
-    contents: "Write a single caption for the given image: " + url + ". Make it catchy and relevant to social media."
+    contents: "Write a single caption for the given image: " + url + ". Don't give the multiple choices. Make it catchy and relevant to social media."
   });
   return response.text
 }
