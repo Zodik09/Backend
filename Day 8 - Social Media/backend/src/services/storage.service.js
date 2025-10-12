@@ -9,12 +9,12 @@ const imagekit = new ImageKit({
   urlEndpoint: process.env.IMAGEKIT_URL_ENDPOINT,
 });
 
-function uploadImage(file) {
+function uploadImage(file, fileName) {
   return new Promise((resolve, reject) => {
     imagekit.upload(
       {
         file: file.buffer,
-        fileName: file.originalname + new mongoose.Types.ObjectId().toString(),
+        fileName: fileName,
         folder: "images",
       },
       (error, result) => {
