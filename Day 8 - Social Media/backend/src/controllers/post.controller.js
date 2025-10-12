@@ -2,7 +2,7 @@ const uploadImage = require("../services/storage.services");
 const AI = require("../services/ai.services");
 const postModel = require("../models/post.model");
 
-const postController = async (req, res) => {
+const createPostController = async (req, res) => {
   const image = req.file;
   const imageData = await uploadImage(image);
   const caption = await AI(imageData.url);
@@ -17,4 +17,9 @@ const postController = async (req, res) => {
     .json({ message: "Post created successfully", caption: caption });
 };
 
-module.exports = postController;
+const getPostController = async (req, res) => {
+  const userData = await postModel.find({ user: req.user._id });
+  res.status(200).json({ user: userData });
+};
+
+module.exports = { createPostController, getPostController };
