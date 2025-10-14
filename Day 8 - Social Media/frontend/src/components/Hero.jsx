@@ -9,7 +9,7 @@ const Hero = () => {
     <div className="hero">
       <div className="left">
         <h1>
-          Show your next you <br /> <h2>like never before.</h2>
+          Show your next you <br /> <span>like never before.</span>
         </h1>
         <p>
           Ever wish your pictures could talk?{" "}
