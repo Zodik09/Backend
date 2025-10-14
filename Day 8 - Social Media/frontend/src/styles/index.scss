@@ -1,0 +1,32 @@
+@use "./variables" as *;
+
+* {
+  margin: 0px;
+  padding: 0px;
+  box-sizing: border-box;
+  list-style: none;
+  text-decoration: none;
+}
+
+html,
+body {
+  width: 100%;
+  height: 100%;
+  background-color: $dark-color;
+  font-family: "Poppins", sans-serif;
+  color: $text-color;
+}
+
+h1 {
+  color: $heading-color;
+  font-weight: $black-font;
+}
+
+p {
+  color: $text-color;
+  font-weight: $medium-font;
+}
+
+span {
+  font-weight: $bold-font;
+}

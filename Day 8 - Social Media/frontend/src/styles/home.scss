@@ -1,0 +1,135 @@
+@use "./variables" as *;
+
+.navbar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+
+    .logo {
+        font-size: 2.5rem;
+        font-weight: $black-font;
+        line-height: 3rem;
+        letter-spacing: 0.5rem;
+        color: $primary-color;
+        text-decoration: none;
+    }
+
+    .auth {
+
+        .authButton {
+            border-radius: 5rem;
+            padding: 0.5rem 1rem;
+            cursor: pointer;
+        }
+
+        .login {
+            border: 1px solid $primary-color;
+            background-color: $primary-color;
+            margin-right: 1rem;
+            position: relative;
+
+            span {
+                color: $dark-color;
+                position: relative;
+                z-index: 10;
+            }
+        }
+
+        .register {
+            border: 1px solid $primary-color;
+            background-color: $dark-color;
+
+            span {
+                color: $primary-color;
+            }
+        }
+    }
+}
+
+.hero {
+    width: 100%;
+    // background-color: red;
+    // height: 100%;
+    margin-top: 4rem;
+    // height: 30rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+
+    .left {
+        padding: 4rem 0;
+        width: 65%;
+        height: 100%;
+        // background-color: saddlebrown;
+        display: flex;
+        justify-content: flex-start;
+        flex-direction: column;
+        align-items: flex-start;
+
+        h1 {
+            font-size: 4.2rem;
+            line-height: 4rem;
+
+            h2 {
+
+                font-size: 4.2rem;
+                line-height: 4rem;
+                font-style: italic;
+                font-weight: $medium-font;
+            }
+
+        }
+
+        p {
+            font-size: 1.3rem;
+            margin-top: 0.5rem;
+
+            span {
+                color: $primary-color;
+            }
+        }
+
+        .postsBtn {
+            border-radius: 5rem;
+            padding: 0.5rem 1rem;
+            cursor: pointer;
+
+            border: 1px solid $primary-color;
+            background-color: $dark-color;
+            margin-top: 1rem;
+
+            span {
+                color: $primary-color;
+            }
+        }
+    }
+
+    .right {
+        width: 35%;
+        // background-color: red;
+        position: relative;
+
+        img {
+            height: 30rem;
+            object-fit: cover;
+            filter: drop-shadow(10px 5px 30px $primary-color);
+        }
+
+        // .brain,
+        // .speaker {
+        //     position: absolute;
+        // }
+        // .brain{
+        //     top: -10%;
+        //     left: 45%;
+        //     width: 15rem;
+        //     height: auto;
+        // }
+        // .speaker{
+        //     bottom: -15%;
+        //     left: -35%;
+        //     width: 20rem;
+        //     height: auto;
+        // }
+    }
+}
