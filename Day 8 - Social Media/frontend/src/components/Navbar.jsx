@@ -5,12 +5,12 @@ import { Link } from "react-router-dom";
 const Navbar = () => {
   const button = [
     {
-      to: "/login",
+      to: "/auth/login",
       text: "Log In",
       className: "login authButton",
     },
     {
-      to: "/register",
+      to: "/auth/register",
       text: "Sign Up",
       className: "register authButton",
     },

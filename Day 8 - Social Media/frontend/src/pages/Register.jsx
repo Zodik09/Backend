@@ -3,57 +3,94 @@ import Navbar from "../components/Navbar";
 import axios from "../utils/Axios";
 
 function Register() {
-  const [registerForm, setRegisterForm] = useState({
+  const [form, setForm] = useState({
+    profilePicture: null,
+    name: "",
+    email: "",
     username: "",
     password: "",
   });
 
   const handleChange = (e) => {
-    const { name, value } = e.target;
-    setRegisterForm((prev) => ({
+    const { name, value, files } = e.target;
+    setForm((prev) => ({
       ...prev,
-      [name]: value,
+      [name]: files ? files[0] : value, // Simplified conditional
     }));
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    axios
-      .post("/api/auth/register", registerForm)
-      .then((response) => {
-        console.log("✅ Server Response:", response.data.message);
-        setRegisterForm({ username: "", password: "" });
-        alert("Form submitted successfully!");
-      })
-      .catch((error) => {
-        console.error("❌ Error submitting form:", error.response.data.message);
+    try {
+      const formData = new FormData();
+      Object.entries(form).forEach(([key, value]) => formData.append(key, value));
+
+      const { data } = await axios.post("/api/auth/register", formData);
+
+      console.log("✅ Server Response:", data?.message || "Registered successfully");
+      alert("Form submitted successfully!");
+
+      // Reset form
+      setForm({
+        profilePicture: null,
+        name: "",
+        email: "",
+        username: "",
+        password: "",
       });
+    } catch (err) {
+      console.error("❌ Error submitting form:", err.response?.data?.message || err.message);
+    }
   };
 
   return (
     <div>
       <Navbar />
       <form onSubmit={handleSubmit}>
+        <input type="file" name="profilePicture" accept="image/*" onChange={handleChange} />
+        <br />
+
+        <input
+          type="text"
+          name="name"
+          value={form.name}
+          onChange={handleChange}
+          placeholder="Name"
+          autoComplete="name"
+        />
+        <br />
+
+        <input
+          type="email"
+          name="email"
+          value={form.email}
+          onChange={handleChange}
+          placeholder="Email"
+          autoComplete="email"
+        />
+        <br />
+
         <input
           type="text"
           name="username"
-          value={registerForm.username}
+          value={form.username}
           onChange={handleChange}
           placeholder="Username"
-          autoComplete="current-username"
+          autoComplete="username"
         />
         <br />
+
         <input
           type="password"
           name="password"
-          value={registerForm.password}
+          value={form.password}
           onChange={handleChange}
           placeholder="Password"
-          autoComplete="current-password"
+          autoComplete="new-password"
         />
-
         <br />
+
         <button type="submit">Register</button>
       </form>
     </div>

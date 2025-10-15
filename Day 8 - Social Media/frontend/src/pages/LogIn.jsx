@@ -1,44 +1,61 @@
 import { useState } from "react";
 import Navbar from "../components/Navbar";
+import axios from "../utils/Axios";
 
 function LogIn() {
   const [loginForm, setLoginForm] = useState({
-    username: "",
+    email: "",
     password: "",
   });
 
   const handleChange = (e) => {
-    setLoginForm({ ...loginForm, [e.target.username]: e.target.value });
+    const { name, value } = e.target;
+    setLoginForm((prev) => ({
+      ...prev,
+      [name]: value,
+    }));
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    try {
-      const res = await fetch("http://localhost:5000/api/contact", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(loginForm),
+    axios
+      .post("/api/auth/login", loginForm)
+      .then((response) => {
+        console.log("✅ Server Response:", response.data.message);
+        setLoginForm({ email: "", password: "" });
+        alert("Form submitted successfully!");
+      })
+      .catch((error) => {
+        console.error("❌ Error while login:", error.response.data.message);
       });
-
-      const data = await res.json();
-      console.log("Server Response:", data);
-    } catch (err) {
-      console.error("Error:", err);
-    }
   };
 
   return (
-     <div><Navbar />
-    <form onSubmit={handleSubmit}>
-      <input username="username" value={loginForm.username} onChange={handleChange} placeholder="username" />
-      <br />
-      <input username="password" value={loginForm.password} onChange={handleChange} placeholder="password" />
-      <br />
-      <button type="submit">LogIn</button>
-    </form></div>
+    <div>
+      <Navbar />
+      <form onSubmit={handleSubmit}>
+        <input
+          type="email"
+          name="email"
+          value={loginForm.email}
+          onChange={handleChange}
+          placeholder="E-mail"
+          autoComplete="current-email"
+        />
+        <br />
+        <input
+          type="password"
+          name="password"
+          value={loginForm.password}
+          onChange={handleChange}
+          placeholder="Password"
+          autoComplete="current-password"
+        />
+        <br />
+        <button type="submit">Login</button>
+      </form>
+    </div>
   );
 }
 
