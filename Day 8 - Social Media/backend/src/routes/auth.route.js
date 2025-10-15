@@ -6,8 +6,14 @@ const {
   loginController,
   logoutController,
 } = require("../controllers/auth.controller");
+const multer = require("multer");
+const upload = multer({ storage: multer.memoryStorage() });
 
-authRoute.post("/register", registerController);
+authRoute.post(
+  "/register",
+  upload.single("profilePicture"),
+  registerController
+);
 
 authRoute.post("/login", loginController);
 
