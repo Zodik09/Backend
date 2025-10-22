@@ -4,134 +4,172 @@ const jwt = require("jsonwebtoken");
 const uploadImage = require("../services/storage.service");
 const { v4: uuid } = require("uuid");
 
-// Register Controller Starts here...
+// Helper: set cookie safely
+const setTokenCookie = (res, token) => {
+  res.cookie("token", token, {
+  httpOnly: false,   // must be false if JS needs to read it
+  secure: false,     // true only in HTTPS
+  sameSite: "lax",   // or "none" if frontend is on different domain
+  maxAge: 1000 * 60 * 60 * 24,
+  });
+};
+
+// ---------------- Register Controller ----------------
 const registerController = async (req, res) => {
-  const { name, email, username, password } = req.body || {};
-  const profilePicture = req.file;
-  console.log(profilePicture, name, email, username, password);
+  try {
+    const { name, email, username, password } = req.body || {};
+    const profilePicture = req.file;
 
-  if (!name || !email || !username || !password) {
-    return res.status(400).json({ message: "All fields are required!" });
-  }
+    // Basic validation
+    if (!name || !email || !username || !password) {
+      return res.status(400).json({ message: "All fields are required!" });
+    }
 
-  const trimmedName = name.trim();
-  const trimmedEmail = email.trim().toLowerCase();
-  const trimmedUsername = username.trim().toLowerCase();
+    const trimmedName = name.trim();
+    const trimmedEmail = email.trim().toLowerCase();
+    const trimmedUsername = username.trim().toLowerCase();
 
-  if (!trimmedName || !trimmedEmail || !trimmedUsername || !password) {
-    return res.status(400).json({ message: "All fields are required!" });
-  }
+    if (!trimmedName || !trimmedEmail || !trimmedUsername || !password) {
+      return res.status(400).json({ message: "All fields are required!" });
+    }
 
-  const nameRegex = /^[A-Za-z0-9_ ]{3,30}$/;
-  if (!nameRegex.test(trimmedName)) {
-    return res.status(422).json({
-      message:
-        "Invalid name! Length must in between 3 to 20 characters. Only Letters, Numbers, or Underscores are allowed.",
+    const nameRegex = /^[A-Za-z0-9_ ]{3,30}$/;
+    if (!nameRegex.test(trimmedName)) {
+      return res.status(422).json({
+        message:
+          "Invalid name! Length must be between 3 to 30 characters. Letters, numbers, spaces, or underscores allowed.",
+      });
+    }
+
+    const usernameRegex = /^[A-Za-z0-9_]{3,20}$/;
+    if (!usernameRegex.test(trimmedUsername)) {
+      return res.status(422).json({
+        message:
+          "Invalid username! Length must be between 3 to 20 characters. Only letters, numbers, or underscores allowed.",
+      });
+    }
+
+    const passwordRegex =
+      /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{6,}$/;
+    if (!passwordRegex.test(password)) {
+      return res.status(422).json({
+        message:
+          "Password must contain at least 1 lowercase, 1 uppercase, 1 digit, and 1 special character.",
+      });
+    }
+
+    // Check if email or username already exists
+    const emailExist = await authModel.findOne({ email: trimmedEmail });
+    const userExist = await authModel.findOne({ username: trimmedUsername });
+
+    if (emailExist) {
+      return res.status(409).json({
+        message: "E-mail already registered. Please login.",
+      });
+    }
+    if (userExist) {
+      return res.status(409).json({
+        message: "Username already taken. Choose a different one.",
+      });
+    }
+
+    // Upload profile picture (if any)
+    let profilePictureData = {};
+    if (profilePicture) {
+      profilePictureData = await uploadImage(profilePicture, uuid());
+    }
+
+    // Hash password
+    const hashedPassword = await bcrypt.hash(password, 10);
+
+    // Create user
+    const user = await authModel.create({
+      profilePicture: profilePictureData.url || "",
+      name: trimmedName,
+      email: trimmedEmail,
+      username: trimmedUsername,
+      password: hashedPassword,
     });
-  }
 
-  const usernameRegex = /^[A-Za-z0-9_]{3,20}$/;
-  if (!usernameRegex.test(trimmedUsername)) {
-    return res.status(422).json({
-      message:
-        "Invalid username! Length must in between 3 to 20 characters. Only Letters, Numbers, or Underscores are allowed.",
+    // Generate JWT token
+    const token = jwt.sign({ id: user._id }, process.env.JWT_SECRET, {
+      expiresIn: "1d",
     });
-  }
 
-  const passwordRegex =
-    /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{6,}$/;
+    // Set cookie
+    setTokenCookie(res, token);
 
-  if (!passwordRegex.test(password)) {
-    return res.status(422).json({
-      message:
-        "Password must contain atleast 1 lowercase, 1 uppercase, 1 digit or 1 special character.",
+    // Respond
+    return res.status(200).json({
+      message: `${trimmedName} registered successfully!`,
+      user: {
+        id: user._id,
+        name: user.name,
+        email: user.email,
+        username: user.username,
+        profilePicture: user.profilePicture,
+      },
     });
-  }
-
-  const emailExist = await authModel.findOne({
-    email: trimmedEmail,
-  });
-  const userExist = await authModel.findOne({
-    username: trimmedUsername,
-  });
-
-  if (emailExist) {
-    return res.status(409).json({
-      message: "E-mail registered already. Login instead.",
-    });
-  }
-  if (userExist) {
-    return res.status(409).json({
-      message: "Username registered already. Choose different username.",
-    });
-  }
-
-  const profilePictureData = await uploadImage(profilePicture, uuid());
-  const hashedPassword = await bcrypt.hash(password, 10);
-
-  const user = await authModel.create({
-    profilePicture: profilePictureData.url,
-    name: trimmedName,
-    email: trimmedEmail,
-    username: trimmedUsername,
-    password: hashedPassword,
-  });
-
-  const token = jwt.sign({ id: user._id }, process.env.JWT_SECRET);
-
-  res.cookie("token", token, {
-    expires: new Date(Date.now() + 7 * 24 * 60 * 60 * 1000), // 7 days
-  });
-
-  return res
-    .status(200)
-    .json({ message: trimmedName + " added successfully." });
-};
-
-// Login Controller Starts here...
-const loginController = async (req, res) => {
-  const { email, password } = req.body || {};
-
-  if (!email || !password) {
+  } catch (err) {
+    console.error("Register error:", err);
     return res
-      .status(400)
-      .json({ message: "Email or Password field can not be empty!" });
+      .status(500)
+      .json({ message: "Server error during registration." });
   }
-
-  const userExist = await authModel.findOne({
-    email,
-  });
-
-  if (!userExist) {
-    return res.status(404).json({ message: email + " not found!" });
-  }
-
-  const verifyPassword = await bcrypt.compare(password, userExist.password);
-
-  if (!verifyPassword) {
-    return res.status(400).json({
-      message: "Invalid credentials!",
-    });
-  }
-
-  const token = jwt.sign({ id: userExist._id }, process.env.JWT_SECRET);
-
-  res.cookie("token", token, {
-    expires: new Date(Date.now() + 7 * 24 * 60 * 60 * 1000), // 7 days
-  });
-
-  return res
-    .status(200)
-    .json({ message: userExist.name + " logged in successfully!" });
 };
 
-// Logout Controller Starts here...
-const logoutController = (req, res) => {
-  res.clearCookie("token");
+// ---------------- Login Controller ----------------
+const loginController = async (req, res) => {
+  try {
+    const { email, password } = req.body || {};
 
-  res.status(200).json({
-    message: "You have logged out successfully!",
+    if (!email || !password) {
+      return res
+        .status(400)
+        .json({ message: "Email and Password are required!" });
+    }
+
+    const user = await authModel.findOne({ email });
+    if (!user) {
+      return res.status(404).json({ message: "Email not found!" });
+    }
+
+    const verifyPassword = await bcrypt.compare(password, user.password);
+    if (!verifyPassword) {
+      return res.status(400).json({ message: "Invalid credentials!" });
+    }
+
+    const token = jwt.sign({ id: user._id }, process.env.JWT_SECRET, {
+      expiresIn: "1d",
+    });
+
+    setTokenCookie(res, token);
+
+    return res.status(200).json({
+      message: `${user.name} logged in successfully!`,
+      user: {
+        id: user._id,
+        name: user.name,
+        email: user.email,
+        username: user.username,
+        profilePicture: user.profilePicture,
+      },
+    });
+  } catch (err) {
+    console.error("Login error:", err);
+    return res.status(500).json({ message: "Server error during login." });
+  }
+};
+
+// ---------------- Logout Controller ----------------
+const logoutController = (req, res) => {
+  res.clearCookie("token", {
+    httpOnly: true,
+    secure: process.env.NODE_ENV === "production",
+    sameSite: process.env.NODE_ENV === "production" ? "none" : "lax",
   });
+
+  return res.status(200).json({ message: "Logged out successfully!" });
 };
 
 module.exports = { registerController, loginController, logoutController };

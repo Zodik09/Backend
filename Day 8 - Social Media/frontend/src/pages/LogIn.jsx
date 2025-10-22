@@ -1,8 +1,9 @@
 import { useState } from "react";
-import Navbar from "../components/Navbar";
 import axios from "../utils/Axios";
+import { useNavigate } from "react-router-dom";
 
 function LogIn() {
+   const navigate = useNavigate();
   const [loginForm, setLoginForm] = useState({
     email: "",
     password: "",
@@ -25,6 +26,7 @@ function LogIn() {
         console.log("✅ Server Response:", response.data.message);
         setLoginForm({ email: "", password: "" });
         alert("Form submitted successfully!");
+          navigate("/home");
       })
       .catch((error) => {
         console.error("❌ Error while login:", error.response.data.message);
@@ -33,7 +35,6 @@ function LogIn() {
 
   return (
     <div>
-      <Navbar />
       <form onSubmit={handleSubmit}>
         <input
           type="email"

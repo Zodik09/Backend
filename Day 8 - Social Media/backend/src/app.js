@@ -7,7 +7,14 @@ const postRoute = require("./routes/post.route");
 
 app.use(express.json());
 app.use(cookieParser());
-app.use(cors())
+
+app.use(
+  cors({
+    origin: "http://localhost:5173", // After production switch to the frontend production URL
+    credentials: true,
+  })
+);
+
 app.use("/api/auth", authRoute);
 app.use("/api/post", postRoute);
 

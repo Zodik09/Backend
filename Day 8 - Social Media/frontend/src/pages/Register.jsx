@@ -1,8 +1,9 @@
 import { useState } from "react";
-import Navbar from "../components/Navbar";
 import axios from "../utils/Axios";
+import { useNavigate } from "react-router-dom";
 
 function Register() {
+  const navigate = useNavigate();
   const [form, setForm] = useState({
     profilePicture: null,
     name: "",
@@ -24,11 +25,16 @@ function Register() {
 
     try {
       const formData = new FormData();
-      Object.entries(form).forEach(([key, value]) => formData.append(key, value));
+      Object.entries(form).forEach(([key, value]) =>
+        formData.append(key, value)
+      );
 
       const { data } = await axios.post("/api/auth/register", formData);
 
-      console.log("✅ Server Response:", data?.message || "Registered successfully");
+      console.log(
+        "✅ Server Response:",
+        data?.message || "Registered successfully"
+      );
       alert("Form submitted successfully!");
 
       // Reset form
@@ -39,16 +45,24 @@ function Register() {
         username: "",
         password: "",
       });
+      navigate("/home");
     } catch (err) {
-      console.error("❌ Error submitting form:", err.response?.data?.message || err.message);
+      console.error(
+        "❌ Error submitting form:",
+        err.response?.data?.message || err.message
+      );
     }
   };
 
   return (
     <div>
-      <Navbar />
       <form onSubmit={handleSubmit}>
-        <input type="file" name="profilePicture" accept="image/*" onChange={handleChange} />
+        <input
+          type="file"
+          name="profilePicture"
+          accept="image/*"
+          onChange={handleChange}
+        />
         <br />
 
         <input
