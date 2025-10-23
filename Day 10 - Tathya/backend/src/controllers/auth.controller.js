@@ -52,7 +52,7 @@ const loginController = async (req, res) => {
         })
     }
     const verifyPassword = bcrypt.compare(password, userExist.password);
-    
+
     if (!verifyPassword) {
         return res.status(400).json({ message: "Invalid credentials!" });
     }
@@ -60,6 +60,7 @@ const loginController = async (req, res) => {
     const token = jwt.sign({ id: userExist._id }, process.env.JWT_SECRET, {
         expiresIn: "7d",
     });
+
     res.cookie("token", token);
 
     res.status(200).json({
