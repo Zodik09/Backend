@@ -10,4 +10,16 @@ async function askAI(question) {
     return answer.text;
 }
 
-module.exports = askAI;
+async function generateVector(chats) {
+    const vector = await ai.models.embedContent({
+        model: 'gemini-embedding-001',
+        contents: chats,
+        config: {
+            outputDimensionality: 768
+        }
+    });
+
+    return vector.embeddings[0].values;
+}
+
+module.exports = { askAI, generateVector };
