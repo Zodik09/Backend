@@ -1,7 +1,6 @@
 const chatModel = require("../models/chat.model");
 
 const chatController = async (req, res) => {
-    console.log(req.body.title)
     const { title } = req.body;
     const user = req.user;
 
