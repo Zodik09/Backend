@@ -1,0 +1,8 @@
+@use "./variables";
+@use "./theme";
+@import "./base";
+@import "./layout";
+@import "./components";
+
+/* Allow theme toggling via data-theme attribute on <html> */
+html[lang] { transition: background-color 200ms linear, color 200ms linear }
