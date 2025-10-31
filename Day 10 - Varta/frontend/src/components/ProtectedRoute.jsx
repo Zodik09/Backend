@@ -1,19 +1,20 @@
 import React from "react";
 import { Navigate } from "react-router-dom";
 
-const isAuthenticated = () => {
-  try {
-    // check common keys that backends or previous flows might use
-    const token = localStorage.getItem("authToken");
-    const user = localStorage.getItem("currentUser");
-    return Boolean(token || user);
-  } catch (e) {
-    return false;
-  }
+// simple cookie reader for client-side code
+const getCookie = (name) => {
+  if (typeof document === "undefined") return null;
+  const match = document.cookie
+    .split("; ")
+    .map((c) => c.split("="))
+    .find(([k]) => k === name);
+  return match ? decodeURIComponent(match[1]) : null;
 };
 
+// ProtectedRoute: only check that a token cookie exists. If absent, redirect to /login.
 const ProtectedRoute = ({ children }) => {
-  if (!isAuthenticated()) return <Navigate to="/login" replace />;
+  const token = getCookie("token");
+  if (!token) return <Navigate to="/login" replace />;
   return children;
 };
 

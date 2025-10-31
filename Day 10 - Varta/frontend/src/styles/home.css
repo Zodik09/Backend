@@ -1,0 +1,20 @@
+.home .featureGrid {
+  display: flex;
+  justify-content: center;
+  gap: 2rem;
+  align-items: center;
+  padding: 1rem 2rem;
+}
+.home .featureGrid .featureCard {
+  text-align: center;
+  padding: 1rem;
+  border-radius: 1rem;
+  border: 1px solid black;
+}
+.home .featureGrid .featureCard span {
+  font-size: 1.5rem;
+}
+.home .featureGrid .featureCard h3 {
+  font-size: 2rem;
+  font-weight: 500;
+}

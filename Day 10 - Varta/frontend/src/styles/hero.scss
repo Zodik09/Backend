@@ -1,0 +1,53 @@
+.hero {
+    padding: 4rem 0;
+    // background-color: yellow;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+
+    h1 {
+        font-size: 3rem;
+        text-transform: uppercase;
+
+        span {
+            font-style: italic;
+            text-transform: capitalize;
+        }
+    }
+
+    p {
+        text-align: center;
+        width: 50%;
+    }
+
+
+    .heroCTA {
+        // background-color: red;
+        display: flex;
+        margin-top: 1rem;
+        // padding: 1rem 2rem;
+        gap: 2rem;
+
+        .btn {
+            border-radius: 5rem;
+            border: 1px solid black;
+            color: black;
+            font-weight: 400;
+            padding: 0.5rem 1rem;
+            transition: all 0.2s ease-in-out;
+
+            &:hover {
+                scale: 1.1;
+            }
+
+            &:active {
+                scale: 0.9;
+            }
+        }
+
+        .secondaryBtn {
+            border: none;
+        }
+    }
+}

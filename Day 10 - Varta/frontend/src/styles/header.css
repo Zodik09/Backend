@@ -1,0 +1,25 @@
+.nav {
+  background-color: rgba(255, 255, 255, 0.242);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0.7rem 2rem;
+  -webkit-backdrop-filter: blur(5px);
+          backdrop-filter: blur(5px);
+}
+.nav .navLeft .logo {
+  font-size: 1.5rem;
+  font-weight: 900;
+  font-style: italic;
+  color: black;
+}
+.nav .navRight {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 1rem;
+  font-weight: 500;
+}
+.nav .navRight .navLink {
+  color: black;
+}

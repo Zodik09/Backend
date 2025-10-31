@@ -1,0 +1,41 @@
+.hero {
+  padding: 4rem 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+}
+.hero h1 {
+  font-size: 3rem;
+  text-transform: uppercase;
+}
+.hero h1 span {
+  font-style: italic;
+  text-transform: capitalize;
+}
+.hero p {
+  text-align: center;
+  width: 50%;
+}
+.hero .heroCTA {
+  display: flex;
+  margin-top: 1rem;
+  gap: 2rem;
+}
+.hero .heroCTA .btn {
+  border-radius: 5rem;
+  border: 1px solid black;
+  color: black;
+  font-weight: 400;
+  padding: 0.5rem 1rem;
+  transition: all 0.2s ease-in-out;
+}
+.hero .heroCTA .btn:hover {
+  scale: 1.1;
+}
+.hero .heroCTA .btn:active {
+  scale: 0.9;
+}
+.hero .heroCTA .secondaryBtn {
+  border: none;
+}

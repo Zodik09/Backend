@@ -1,0 +1,29 @@
+.nav {
+    background-color: rgba(255, 255, 255, 0.242);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: .7rem 2rem;
+    backdrop-filter: blur(5px);
+
+    .navLeft {
+        .logo {
+            font-size: 1.5rem;
+            font-weight: 900;
+            font-style: italic;
+            color: black;
+        }
+    }
+
+    .navRight {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        gap: 1rem;
+        font-weight: 500;
+
+        .navLink {
+            color: black;
+        }
+    }
+}
