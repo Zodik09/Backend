@@ -1,25 +1,27 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import Card from "../components/Card";
 import instance from "../utils/Router";
+import Label from "../components/Label";
+import "../styles/login.css";
+import Tree from "../assets/tree.jpg";
 
 const Login = () => {
   const inputFieldData = [
     {
-      label: "Email",
+      // label: "Email",
       name: "email",
       value: "email",
       type: "email",
       autoComplete: "email",
-      placeholder: "example@example.com",
+      placeholder: "Enter your email",
     },
     {
-      label: "Password",
+      // label: "Password",
       name: "password",
       type: "password",
       value: "password",
       autoComplete: "new-password",
-      placeholder: "********",
+      placeholder: "Enter your password",
     },
   ];
 
@@ -32,38 +34,45 @@ const Login = () => {
   const submit = async (e) => {
     e.preventDefault();
     try {
-      const result = await instance.post("/api/auth/login", formData);
-      console.log(result.data.message);
+      const result = await instance.post("/auth/login", formData);
+      console.log(result?.data?.message);
       navigate("/chat");
     } catch (error) {
       const msg =
-        error?.response?.data?.message || error.message || "Login failed";
+        error?.response?.data?.message || error?.message || "Login failed";
       console.error("Login error:", msg);
     }
   };
 
   return (
-    <Card>
-      <h2>Login</h2>
-      <form className="form" onSubmit={submit}>
-        {inputFieldData.map((field, index) => (
-          <Label
-            key={index}
-            label={field.label}
-            name={field.name}
-            type={field.type}
-            autoComplete={field.autoComplete}
-            placeholder={field.placeholder}
-            value={formData[field.value]}
-            setFormData={setFormData}
-          />
-        ))}
+    <div className="login">
+      <div className="formContainer">
+        <div className="left">
+          <img src={Tree} alt="tree" />
+        </div>
+        <div className="right">
+          <h2>Login</h2>
+          <form onSubmit={submit}>
+            {inputFieldData.map((field, index) => (
+              <Label
+                key={index}
+                // label={field.label}
+                name={field.name}
+                type={field.type}
+                autoComplete={field.autoComplete}
+                placeholder={field.placeholder}
+                value={formData[field.value]}
+                setFormData={setFormData}
+              />
+            ))}
 
-        <button className="btn" type="submit">
-          Login
-        </button>
-      </form>
-    </Card>
+            <button className="btn" type="submit">
+              Login
+            </button>
+          </form>
+        </div>
+      </div>
+    </div>
   );
 };
 

@@ -6,6 +6,7 @@
   padding: 0.7rem 2rem;
   -webkit-backdrop-filter: blur(5px);
           backdrop-filter: blur(5px);
+  height: 10vh;
 }
 .nav .navLeft .logo {
   font-size: 1.5rem;

@@ -1,8 +1,10 @@
-.register {
+.login {
     // background-color: red;
     display: flex;
     flex-direction: column;
     padding: 1.5rem 0;
+
+
 
     .formContainer {
         width: 60vw;
@@ -62,7 +64,7 @@
 
                 .btn {
                     cursor: pointer;
-                    border-radius: 0.5rem;
+                    border-radius: .5rem;
                     border: 1px solid black;
                     color: black;
                     font-weight: 400;

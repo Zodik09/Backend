@@ -10,11 +10,17 @@
         padding: 1rem 2rem;
 
         .featureCard {
-            // background-color: saddlebrown;
             text-align: center;
             padding: 1rem;
             border-radius: 1rem;
             border: 1px solid black;
+
+            &:hover {
+                box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
+                transform: translateY(-5px);
+                transition: all 0.2s ease;
+            }
+
 
             span {
                 font-size: 1.5rem;

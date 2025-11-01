@@ -1,7 +1,7 @@
 import React from "react";
 
 const Label = ({
-  label,
+  // label,
   name,
   type,
   value,
@@ -15,8 +15,8 @@ const Label = ({
   };
 
   return (
-    <label>
-      {label}
+    <>
+      {/* {label} */}
       <input
         name={name}
         type={type}
@@ -26,7 +26,7 @@ const Label = ({
         onChange={handleChange}
         required
       />
-    </label>
+    </>
   );
 };
 

@@ -1,46 +1,35 @@
-import React, { useState } from "react";
-import Card from "../components/Card";
+import React from "react";
+import "../styles/chat.scss";
 
 const Chat = () => {
-  const [messages, setMessages] = useState([
-    { id: 1, from: "System", text: "Welcome to the chat!" },
-  ]);
-  const [text, setText] = useState("");
-
-  const send = (e) => {
-    e.preventDefault();
-    if (!text.trim()) return;
-    const next = {
-      id: Date.now(),
-      from: "You",
-      text: text.trim(),
-    };
-    setMessages((s) => [...s, next]);
-    setText("");
-  };
-
   return (
-    <Card>
-      <h2>Chats</h2>
-      <div className="chat-window">
-        {messages.map((m) => (
-          <div key={m.id} className="chat-message">
-            <strong>{m.from}:</strong> <span>{m.text}</span>
-          </div>
-        ))}
-      </div>
+    <div className="chats">
+      <aside className="sidebar">
+        <div className="top">
+          <button>+ New chat</button>
+        </div>
+        <nav className="previousChats">
+          {Array.from({ length: 20 }).map((_, index) => (
+            <button key={index} className="chatItem">
+              Previous Chat {index + 1}
+            </button>
+          ))}
+        </nav>
+      </aside>
 
-      <form className="chat-form" onSubmit={send}>
-        <input
-          value={text}
-          onChange={(e) => setText(e.target.value)}
-          placeholder="Type a message"
-        />
-        <button className="btn" type="submit">
-          Send
-        </button>
-      </form>
-    </Card>
+      <main>
+        <h2>Where should we begin?</h2>
+
+        <div className="chatSection">
+          <div className="chatContainer"></div>
+          <section className="inputField">
+            <button className="add">+</button>
+            <input placeholder="Ask anything" />
+            <button className="ask">🎤</button>
+          </section>
+        </div>
+      </main>
+    </div>
   );
 };
 

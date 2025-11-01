@@ -1,9 +1,9 @@
-.register {
+.login {
   display: flex;
   flex-direction: column;
   padding: 1.5rem 0;
 }
-.register .formContainer {
+.login .formContainer {
   width: 60vw;
   height: 80vh;
   margin: auto;
@@ -12,17 +12,17 @@
   overflow: hidden;
   display: flex;
 }
-.register .formContainer .left {
+.login .formContainer .left {
   height: 100%;
   width: 50%;
 }
-.register .formContainer .left img {
+.login .formContainer .left img {
   width: 100%;
   height: 100%;
   -o-object-fit: cover;
      object-fit: cover;
 }
-.register .formContainer .right {
+.login .formContainer .right {
   width: 50%;
   height: 100%;
   display: flex;
@@ -30,18 +30,18 @@
   justify-content: center;
   align-items: center;
 }
-.register .formContainer .right h2 {
+.login .formContainer .right h2 {
   font-size: 2.5rem;
   text-align: center;
   margin-bottom: 1rem;
 }
-.register .formContainer .right form {
+.login .formContainer .right form {
   width: 100%;
   display: flex;
   flex-direction: column;
   align-items: center;
 }
-.register .formContainer .right form input {
+.login .formContainer .right form input {
   width: 80%;
   border: none;
   outline: none;
@@ -50,7 +50,7 @@
   border-radius: 0.5rem;
   margin-bottom: 1rem;
 }
-.register .formContainer .right form .btn {
+.login .formContainer .right form .btn {
   cursor: pointer;
   border-radius: 0.5rem;
   border: 1px solid black;
@@ -61,10 +61,10 @@
   transform: translateY(0) scale(1);
   /* subtle default shadow (outset) so hover can smoothly increase it */
 }
-.register .formContainer .right form .btn:hover {
+.login .formContainer .right form .btn:hover {
   transform: translateY(-4px) scale(1.03);
   box-shadow: rgba(0, 0, 0, 0.25) 0px 14px 28px, rgba(0, 0, 0, 0.22) 0px 10px 10px;
 }
-.register .formContainer .right form .btn:active {
+.login .formContainer .right form .btn:active {
   transform: translateY(0) scale(0.98);
 }

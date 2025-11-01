@@ -35,19 +35,24 @@
             color: black;
             font-weight: 400;
             padding: 0.5rem 1rem;
-            transition: all 0.2s ease-in-out;
+            // animate box-shadow and transform explicitly for smoother results
+            transition: box-shadow 0.2s ease-in-out, transform 0.2s ease;
+            transform: translateY(0) scale(1);
+            /* subtle default shadow (outset) so hover can smoothly increase it */
+            // box-shadow: rgba(50, 50, 93, 0.25) 0px 30px 60px -12px inset, rgba(0, 0, 0, 0.3) 0px 18px 36px -18px inset;
 
             &:hover {
-                scale: 1.1;
+                transform: translateY(-4px) scale(1.03);
+                box-shadow: rgba(0, 0, 0, 0.25) 0px 14px 28px, rgba(0, 0, 0, 0.22) 0px 10px 10px;
             }
 
             &:active {
-                scale: 0.9;
+                transform: translateY(0) scale(0.98);
             }
         }
 
-        .secondaryBtn {
-            border: none;
-        }
+        // .secondaryBtn {
+        //     border: none;
+        // }
     }
 }
