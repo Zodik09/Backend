@@ -61,4 +61,16 @@ const loginController = async (req, res) => {
 
     return res.status(200).json({ message: "User logged in successfully!" });
 }
-module.exports = { loginController, registerController };
+const logout = async (req, res) => {
+    res.clearCookie("token");
+    res.status(200).json({ message: "Logged out successfully!" });
+}
+
+const tokenVerify = async (req, res) => {
+    return res.status(200).json({
+        message: "Token valid",
+    });
+}
+
+
+module.exports = { loginController, registerController, logout, tokenVerify };
