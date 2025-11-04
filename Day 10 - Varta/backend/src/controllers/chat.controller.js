@@ -4,6 +4,9 @@ const chatController = async (req, res) => {
     const { title } = req.body;
     const user = req.user;
 
+    console.log("Title: " + title);
+
+
     if (!title) {
         return res.status(400).json({
             message: "Title is required!"
@@ -20,5 +23,27 @@ const chatController = async (req, res) => {
         chat
     })
 }
+const fetchChats = async (req, res) => {
+    const user = req.user;
 
-module.exports = chatController;
+    if (!user) {
+        return res.status(404).json({
+            message: "User not found! Try login again!"
+        })
+    }
+
+    const fetchedChats = await chatModel.find({
+        user
+    })
+    // console.log(fetchedChats)
+
+    res.json({
+        message: "Chat fetched successfully",
+        fetchedChats
+    })
+}
+
+module.exports = {
+    chatController,
+    fetchChats
+};
